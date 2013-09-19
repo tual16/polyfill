@@ -1,34 +1,5 @@
 // http://wiki.ecmascript.org/doku.php?id=harmony:binary_data
-(function(global){
-
-  function ASSERT(c, m) { if (!c) { throw new Error(m); } }
-
-  (function() {
-    var orig = Object.prototype.toString;
-    Object.prototype.toString = function toString() {
-      if (Object(this) === this && '__Class__' in this) {
-        return '[object ' + this.__Class__ + ']';
-      }
-      return orig.call(this, arguments);
-    };
-  }());
-
-  function Data() { throw new TypeError(); }
-  Data.prototype = {};
-  Object.defineProperties(Data.prototype, {
-    buffer: { get: function() { return this.__Value__.buffer; }},
-    byteOffset: { get: function() { return this.__Value__.byteOffset; }},
-    byteLength: { get: function() { return this.__Value__.byteLength; }},
-    update: { value: function(val) {
-      if (this !== Object(this) || !(this instanceof Data)) { throw new TypeError(); }
-      var r = this.__DataType__.__Convert__(val);
-      viewCopy(r, this.__Value__, 0, r.byteLength);
-    }}
-  });
-  global.Data = Data;
-
-  function Type() { throw new TypeError(); }
-  Type.prototype = Data;
+(
   global.Type = Type;
 
   // "block" is defined as an object with a __Value__ property (which is an ArrayBufferView)
